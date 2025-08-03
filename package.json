@@ -1,0 +1,23 @@
+{
+  "name": "techweb-backend",
+  "version": "0.1.0",
+  "description": "A backend for a web app!",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:dev": "node src/index.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "univerity",
+    "meme",
+    "restaurants",
+    "reviews"
+  ],
+  "author": "Nunzio Ricci",
+  "license": "The Unlicence",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
