@@ -1,6 +1,6 @@
 import express, { Router } from "express"
-import { HttpError } from "../errors/http.error";
-import checkAuth from "../middleware/auth.middleware";
+import HttpError from "../errors/http.error.js";
+import checkAuth from "../middleware/auth.middleware.js";
 
 /**
  * Creates an instance of AuthRouter.

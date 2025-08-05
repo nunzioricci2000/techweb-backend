@@ -4,8 +4,8 @@ import {
     UserAlreadyRegisteredError,
     UserNotRegisteredError,
     WrongPasswordError
-} from "../errors/auth.error";
-import { User } from "../models";
+} from "../errors/auth.error.js";
+import { User } from "../models/index.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
@@ -39,7 +39,7 @@ export default class AuthController {
      * Registers a new user in the database
      * @param {string} username
      * @param {string} password
-     * @returns {string}
+     * @returns {Promise<string>}
      * @throws {UserAlreadyRegisteredError} if the user is already registered
      */
     async register(username, password) {
@@ -57,7 +57,7 @@ export default class AuthController {
      * Logs in a user by checking credentials
      * @param {string} username 
      * @param {string} password 
-     * @returns {string}
+     * @returns {Promise<string>}
      * @throws {UserNotRegisteredError} if the user is not registered
      * @throws {WrongPasswordError} if the password is incorrect
      */

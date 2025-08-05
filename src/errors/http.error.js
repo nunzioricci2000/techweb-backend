@@ -2,7 +2,7 @@
 /**
  * Base errors for http issues
  */
-export class HttpError extends Error {
+export default class HttpError extends Error {
     /**
      * @param {string} message error message
      * @param {number} code HTTP status code
