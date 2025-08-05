@@ -12,14 +12,14 @@ export default function AuthRouter(authController) {
     const router = Router();
     router.use(express.json());
 
-    router.post("/register", (req, res, next) => {
+    router.post("/register", async (req, res, next) => {
         try {
-            if (!req.username || !req.password) {
+            if (!req.body.username || !req.body.password) {
                 throw new HttpError(422, "Missing needed parameters!", 
                     { requiredFields: ["username", "password"] });
             }
-            const username = req.username;
-            const token = authController.register(username, req.password);
+            const username = req.body.username;
+            const token = await authController.register(username, req.body.password);
             res.json({
                 username,
                 token
@@ -33,7 +33,7 @@ export default function AuthRouter(authController) {
                 next({ 
                     status: err.code, 
                     message: err.message, 
-                    ...err.custom_fields
+                    custom_error_fields: err.custom_fields
                 });
                 break;
             default:
@@ -42,14 +42,14 @@ export default function AuthRouter(authController) {
         }
     })
 
-    router.post("/login", (req, res, next) => {
+    router.post("/login", async (req, res, next) => {
         try {
-            if (!req.username || !req.password) {
+            if (!req.body.username || !req.body.password) {
                 throw new HttpError(422, "Missing needed parameters!", 
                     { requiredFields: ["username", "password"] });
             }
-            const username = req.username;
-            const token = authController.login(username, req.password);
+            const username = req.body.username;
+            const token = await authController.login(username, req.body.password);
             res.json({
                 username,
                 token
