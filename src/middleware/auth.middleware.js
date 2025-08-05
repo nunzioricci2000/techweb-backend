@@ -17,7 +17,7 @@ export default function checkAuth(authController) {
         const token = authHeader?.split(' ')[1];
         if (!token) next({ status: 401, message: "Unauthorized" });
         try {
-            req.username = await authController.verifyToken(token);
+            req.user = await authController.verifyToken(token);
             next();
         } catch(_) {
             next({ status: 401, message: "Unauthorized" })
