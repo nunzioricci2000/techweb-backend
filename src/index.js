@@ -6,9 +6,9 @@ import AuthController from './controllers/auth.controller.js';
 const app = express();
 const PORT = 3000;
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+const authController = new AuthController();
+
+app.use('/auth', AuthRouter(authController));
 
 app.use(errorHandler);
 
