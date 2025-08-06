@@ -5,13 +5,13 @@
 export default class HttpError extends Error {
     /**
      * @param {string} message error message
-     * @param {number} code HTTP status code
-     * @param {Object} custom_fields additional fields to include in the error
+     * @param {number} status HTTP status code
+     * @param {Object} custom_error_fields additional fields to include in the error
      */
-    constructor(code, message, custom_fields = {}) {
+    constructor(status, message, custom_error_fields = {}) {
         super(message);
         this.name = "HttpError";
-        this.code = code;
-        this.custom_fields = custom_fields;
+        this.status = status;
+        this.custom_error_fields = custom_error_fields;
     }
 }
