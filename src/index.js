@@ -1,12 +1,16 @@
 import express from 'express';
 import errorHandler from './middleware/error-handler.middleware.js';
-import AuthRouter from './routes/auth.router.js';
-import AuthController from './controllers/auth.controller.js';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import initModels from './models/index.js';
+import initRepositories from './repositories/index.js';
+import initServices from './services/index.js';
+import initRouters from './routes/index.js';
+import initControllers from './controllers/index.js';
+import initMiddlewares from './middleware/index.js';
+import { PORT } from './common/constants.js';
 
 const app = express();
-const PORT = 3000;
 
 const swaggerSpecification = swaggerJsdoc({
     swaggerDefinition: {
@@ -21,9 +25,14 @@ const swaggerSpecification = swaggerJsdoc({
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
 
-const authController = new AuthController();
+const models        = await initModels();
+const repositories  = await initRepositories(models);
+const services      = await initServices(repositories);
+const controllers   = await initControllers(services);
+const middlewares   = await initMiddlewares(services);
+const routers       = await initRouters(controllers, middlewares);
 
-app.use('/auth', AuthRouter(authController));
+app.use('/auth', routers.authRouter);
 
 app.use(errorHandler);
 
