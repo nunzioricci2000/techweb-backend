@@ -1,124 +1,93 @@
-import {
-    ExpiredSessionError,
-    InvalidSessionError,
-    UserAlreadyRegisteredError,
-    UserNotRegisteredError,
-    WrongPasswordError
-} from "../errors/auth.error.js";
-import { User } from "../models/index.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import HttpError from '../errors/http.error.js';
 
 /**
  * Controller for handling authentication-related operations
  */
 export default class AuthController {
     /**
-     * The secret key used for signing JWT tokens
-     * @type {string}
+     * The AuthService instance used by this controller
+     * @type {import('../services/auth.service.js').default}
      */
-    #secret;
+    #authService;
 
     /**
-     * The salt used for hashing passwords
-     * @type {string}
+     * Constructor for AuthController
+     * @param {import('../services/auth.service.js').default} authService - The authentication service instance
      */
-    #salt;
-
-    /**
-     * Creates an instance of AuthController.
-     * @param {string} secret - The secret key used for signing JWT tokens
-     * @param {number} saltRounds - The number of rounds to use for hashing passwords
-     */
-    constructor(secret = "SECRET", saltRounds = 10) {
-        this.#secret = secret;
-        this.#salt = bcrypt.genSaltSync(saltRounds);
-    }
-    
-    /**
-     * Registers a new user in the database
-     * @param {string} username
-     * @param {string} password
-     * @returns {Promise<string>}
-     * @throws {UserAlreadyRegisteredError} if the user is already registered
-     */
-    async register(username, password) {
-        if (await this.#isUserRegistered(username))
-            throw new UserAlreadyRegisteredError(username);
-        const hashedPassword = bcrypt.hashSync(password, this.#salt);
-        await User.create({
-            username: username,
-            password: hashedPassword
-        });
-        return this.#generateJwt(username);
+    constructor(authService) {
+        this.#authService = authService;
     }
 
     /**
-     * Logs in a user by checking credentials
-     * @param {string} username 
-     * @param {string} password 
-     * @returns {Promise<string>}
-     * @throws {UserNotRegisteredError} if the user is not registered
-     * @throws {WrongPasswordError} if the password is incorrect
+     * Handles user registration
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next - The next middleware function in the stack
+     * @returns {Promise<void>} A promise that resolves when the registration is complete
      */
-    async login(username, password) {
-        const user = await this.#getUser(username);
-        if (!user) throw new UserNotRegisteredError(username);
-        const savedHash = user.password;
-        if (bcrypt.compareSync(password, savedHash))
-            return this.#generateJwt(username);
-        throw new WrongPasswordError(username);
-    }
-
-    /**
-     * Verifies a JWT token
-     * @param {string} token 
-     * @returns {Promise<{username: string}>}
-     * @throws {InvalidSessionError} if the token is invalid
-     * @throws {ExpiredSessionError} if the token has expired
-     */
-    async verifyToken(token) {
+    register = async (req, res, next) => {
         try {
-            const verified = jwt.verify(token, this.#secret);
-            return { username: verified.username };
-        } catch(err) {
-            switch(err.name) {
-            case "TokenExpiredError":
-                throw new ExpiredSessionError();
-            case "JsonWebTokenError":
-            case "NotBeforeError":
-                throw new InvalidSessionError();
-            default:
-                throw err;
+            const { username, password } = req.body;
+            if (!username || !password) {
+                throw new HttpError(422, "Missing needed parameters!",
+                    { requiredFields: ["username", "password"] });
             }
+            const token = await this.#authService.register(username, password);
+            res.json({ username, token });
+        } catch(err) {
+            this.#handleError(err, next);
         }
     }
 
     /**
-     * Checks in the model if the user is registerd
-     * @param {string} username user to check
-     * @returns {Promise<boolean>} if the user exists returns true, else false
+     * Handles user login
+     * @param {import('express').Request} req 
+     * @param {import('express').Response} res
+     * @param {import('express').NextFunction} next - The next middleware function in the stack
+     * @return {Promise<void>} A promise that resolves when the login is complete
      */
-    async #isUserRegistered(username) {
-        const user = await this.#getUser(username);
-        return !!user;
+    login = async (req, res, next) => {
+        try {
+            const { username, password } = req.body;
+            if (!username || !password) {
+                throw new HttpError(422, "Missing needed parameters!", 
+                    { requiredFields: ["username", "password"] });
+            }
+            const token = await this.#authService.login(username, password);
+            res.json({ username, token });
+        } catch(err) {
+            this.#handleError(err, next);
+        }
     }
 
     /**
-     * Retrieves a user by username
-     * @param {string} username 
-     * @returns {Promise<import('sequelize').ModelCtor<import('sequelize')>.Model|null>}
+     * Handles fetching the authenticated user's information
+     * @param {import('express').Request & { user: import('../repositories/user.repository.js').User }} req
+     * - The Express request object with user information
+     * @param {import('express').Response} res - The Express response object
+     * @returns {Promise<void>} A promise that resolves when the user information is sent
+     * @requires The authenticated user's information. This is populated by the authentication middleware.
      */
-    async #getUser(username) {
-        return await User.findOne({ where: { username: username } });
+    me = async (req, res) => {
+        res.json(req.user);
     }
 
     /**
-     * Generates the JSON Web Token
-     * @param {string} username
-     * @returns {string} - the generated JWT token
+     * Handles errors
+     * @param {Error} err
+     * @param {import('express').NextFunction} next
+     * @returns {void}
      */
-    #generateJwt(username) {
-        return jwt.sign({ username }, this.#secret, { expiresIn: '1h' });
+    #handleError(err, next) {
+        console.error("AuthController error:", err);
+        const errorMap = {
+            "HttpError": err,
+            "UserAlreadyRegisteredError": { status: 409, message: "User already registered" },
+            "UserNotRegisteredError": { status: 409, message: "User not registered" },
+            "WrongPasswordError": { status: 401, message: "Wrong password" },
+            "default": { status: 500, message: "Internal server error!" }
+        };
+        const errorInfo = errorMap[err.name] || errorMap["default"];
+        next(errorInfo);
     }
 }
