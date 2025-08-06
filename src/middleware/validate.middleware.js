@@ -1,4 +1,5 @@
 import { validationResult } from "express-validator";
+import HttpError from "../errors/http.error.js";
 
 /**
  * 
@@ -10,5 +11,5 @@ import { validationResult } from "express-validator";
 export default function validate(req, res, next) {
   const errors = validationResult(req);
   if (errors.isEmpty()) return next();
-  res.status(400).json({ errors: errors.array() });
+  next(new HttpError(400, "Missing parameters", { errors: errors.array()}));
 };
