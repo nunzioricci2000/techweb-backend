@@ -1,5 +1,4 @@
 import { matchedData } from 'express-validator';
-import HttpError from '../errors/http.error.js';
 
 /**
  * Controller for handling authentication-related operations

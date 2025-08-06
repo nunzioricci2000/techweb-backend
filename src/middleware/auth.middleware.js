@@ -18,7 +18,7 @@ export default function CheckAuth(authService) {
         try {
             req.user = await authService.verifyToken(token);
             next();
-        } catch (_) {
+        } catch {
             next({ status: 401, message: 'Unauthorized' });
         }
     };

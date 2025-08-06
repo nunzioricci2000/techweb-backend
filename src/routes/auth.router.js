@@ -1,5 +1,4 @@
 import express, { Router } from 'express';
-import checkAuth from '../middleware/auth.middleware.js';
 import validator from 'express-validator';
 import validate from '../middleware/validate.middleware.js';
 

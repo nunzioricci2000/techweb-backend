@@ -36,7 +36,7 @@ export default class UserRepository {
      * @returns {Promise<User?>} The user object found
      */
     async readUser(filter) {
-        const condition = !!filter.byId ? { id: filter.byId } : { username: filter.byUsername };
+        const condition = filter.byId ? { id: filter.byId } : { username: filter.byUsername };
         const foundUser = await this.#UserModel.findOne({ where: condition });
         if (!foundUser) return null;
         return {

@@ -4,10 +4,10 @@
  * @param {Error} err - The error object.
  * @param {import('express').Request} req - The Express request object.
  * @param {import('express').Response} res - The Express response object.
- * @param {import('express').NextFunction} next - The next middleware function in the stack.
+ * @param {import('express').NextFunction} _next - The next middleware function in the stack.
  * @returns {void}
  */
-export default function errorHandler(err, req, res, next) {
+export default function errorHandler(err, req, res, _next) {
     res.status(err.status || 500).json({
         code: err.status || 500,
         description: err.message || 'An error occurred',

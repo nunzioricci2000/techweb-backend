@@ -6,7 +6,7 @@ import UserRepository from './user.repository.js';
  * @return {Promise<RepositoryCollection>} A promise that resolves to a collection of repositories.
  */
 export default async function initRepositories(modelCollection) {
-    const { UserModel, RestaurantModel, ReviewModel, VoteModel } = modelCollection;
+    const { UserModel } = modelCollection;
     return {
         userRepository: new UserRepository(UserModel),
     };
