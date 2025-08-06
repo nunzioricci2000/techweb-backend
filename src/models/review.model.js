@@ -6,7 +6,7 @@ import { DataTypes } from "sequelize";
  * @returns {import('sequelize').ModelCtor<import('sequelize').Model>} The Review model
  */
 export default function createReviewModel(database) {
-    return database.define('Restaurant', {
+    return database.define('Review', {
         id: {
             type: DataTypes.INTEGER, 
             primaryKey: true, 

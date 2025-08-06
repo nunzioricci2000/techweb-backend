@@ -6,7 +6,7 @@ import { DataTypes } from "sequelize";
  * @returns {import('sequelize').ModelCtor<import('sequelize').Model>} The Vote model
  */
 export default function createVoteModel(database) {
-    return database.define('Restaurant', {
+    return database.define('Vote', {
         id: {
             type: DataTypes.INTEGER, 
             primaryKey: true, 
