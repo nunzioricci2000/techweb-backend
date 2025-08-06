@@ -14,7 +14,7 @@ const app = express();
 
 const swaggerSpecification = swaggerJsdoc({
     swaggerDefinition: {
-    openapi: '3.0.0',
+        openapi: '3.0.0',
         info: {
             title: 'Fake Restaurant API',
             version: '1.0.0',
@@ -25,12 +25,12 @@ const swaggerSpecification = swaggerJsdoc({
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
 
-const models        = await initModels();
-const repositories  = await initRepositories(models);
-const services      = await initServices(repositories);
-const controllers   = await initControllers(services);
-const middlewares   = await initMiddlewares(services);
-const routers       = await initRouters(controllers, middlewares);
+const models = await initModels();
+const repositories = await initRepositories(models);
+const services = await initServices(repositories);
+const controllers = await initControllers(services);
+const middlewares = await initMiddlewares(services);
+const routers = await initRouters(controllers, middlewares);
 
 app.use('/auth', routers.authRouter);
 

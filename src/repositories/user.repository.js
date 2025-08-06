@@ -1,4 +1,3 @@
-
 /**
  * UserRepository class for managing user data in the database.
  */
@@ -7,7 +6,7 @@ export default class UserRepository {
      * @type {import('sequelize').ModelCtor<import('sequelize').Model>}
      */
     #UserModel;
-    
+
     /**
      * Creates an instance of UserRepository.
      * @param {import('sequelize').ModelCtor<import('sequelize').Model>} UserModel - The Sequelize User model
@@ -27,7 +26,7 @@ export default class UserRepository {
         return {
             id: newUser.id,
             username: newUser.username,
-            password: newUser.password
+            password: newUser.password,
         };
     }
 
@@ -37,15 +36,13 @@ export default class UserRepository {
      * @returns {Promise<User?>} The user object found
      */
     async readUser(filter) {
-        const condition = !!filter.byId 
-                        ? { id: filter.byId } 
-                        : { username: filter.byUsername }
-        const foundUser = await this.#UserModel.findOne({ where: condition })
+        const condition = !!filter.byId ? { id: filter.byId } : { username: filter.byUsername };
+        const foundUser = await this.#UserModel.findOne({ where: condition });
         if (!foundUser) return null;
         return {
             id: foundUser.id,
             username: foundUser.username,
-            password: foundUser.password
+            password: foundUser.password,
         };
     }
 }

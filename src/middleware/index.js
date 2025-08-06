@@ -1,4 +1,4 @@
-import checkAuth from './auth.middleware.js'
+import checkAuth from './auth.middleware.js';
 
 /**
  * Initializes the controllers for the application.
@@ -9,7 +9,7 @@ import checkAuth from './auth.middleware.js'
 export default async function initMiddlewares(serviceCollection) {
     const { authService } = serviceCollection;
     return {
-        checkAuth: checkAuth(authService)
+        checkAuth: checkAuth(authService),
     };
 }
 

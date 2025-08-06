@@ -1,4 +1,3 @@
-
 /**
  * Factory that creates a middleware for checking that user is authenticated.
  * @param {import('../services/auth.service').default} authService
@@ -13,14 +12,14 @@ export default function CheckAuth(authService) {
      * @return {void}
      */
     return async function (req, res, next) {
-        const authHeader = req.headers['authorization']
+        const authHeader = req.headers['authorization'];
         const token = authHeader?.split(' ')[1];
-        if (!token) next({ status: 401, message: "Unauthorized" });
+        if (!token) next({ status: 401, message: 'Unauthorized' });
         try {
             req.user = await authService.verifyToken(token);
             next();
-        } catch(_) {
-            next({ status: 401, message: "Unauthorized" })
+        } catch (_) {
+            next({ status: 401, message: 'Unauthorized' });
         }
-    }
+    };
 }

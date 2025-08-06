@@ -1,4 +1,3 @@
-
 /**
  * Base errors for authorization issues
  */
@@ -8,7 +7,7 @@ export class AuthError extends Error {
      */
     constructor(message) {
         super(message);
-        this.name = "AuthError"
+        this.name = 'AuthError';
     }
 }
 
@@ -17,11 +16,11 @@ export class AuthError extends Error {
  */
 export class UserAlreadyRegisteredError extends AuthError {
     /**
-     * @param {string} username 
+     * @param {string} username
      */
     constructor(username) {
         super(`User with username "${username}" is already registered.`);
-        this.name = "UserAlreadyRegisteredError";
+        this.name = 'UserAlreadyRegisteredError';
     }
 }
 
@@ -30,11 +29,11 @@ export class UserAlreadyRegisteredError extends AuthError {
  */
 export class UserNotRegisteredError extends AuthError {
     /**
-     * @param {string} username 
+     * @param {string} username
      */
     constructor(username) {
         super(`User with username "${username}" is not registered.`);
-        this.name = "UserNotRegisteredError";
+        this.name = 'UserNotRegisteredError';
     }
 }
 
@@ -43,11 +42,11 @@ export class UserNotRegisteredError extends AuthError {
  */
 export class WrongPasswordError extends AuthError {
     /**
-     * @param {string} username 
+     * @param {string} username
      */
     constructor(username) {
         super(`User with username "${username}" sent wrong password.`);
-        this.name = "WrongPasswordError";
+        this.name = 'WrongPasswordError';
     }
 }
 
@@ -57,8 +56,8 @@ export class WrongPasswordError extends AuthError {
  */
 export class InvalidSessionError extends AuthError {
     constructor() {
-        super("Invalid session.");
-        this.name = "InvalidSessionError";
+        super('Invalid session.');
+        this.name = 'InvalidSessionError';
     }
 }
 
@@ -67,7 +66,7 @@ export class InvalidSessionError extends AuthError {
  */
 export class ExpiredSessionError extends AuthError {
     constructor() {
-        super("Session expired.");
-        this.name = "ExpiredSessionError";
+        super('Session expired.');
+        this.name = 'ExpiredSessionError';
     }
 }

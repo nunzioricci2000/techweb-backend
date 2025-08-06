@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 
 /**
  * A factory that create the user model
@@ -8,18 +8,18 @@ import { DataTypes } from "sequelize";
 export default function createUserModel(database) {
     return database.define('User', {
         id: {
-            type: DataTypes.INTEGER, 
-            primaryKey: true, 
-            autoIncrement: true
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         username: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: true,
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
-        }
+            allowNull: false,
+        },
     });
 }

@@ -1,5 +1,3 @@
-
-
 /**
  * @function errorHandler
  * @description Middleware function to handle errors and send a JSON response with error details.
@@ -12,7 +10,7 @@
 export default function errorHandler(err, req, res, next) {
     res.status(err.status || 500).json({
         code: err.status || 500,
-        description: err.message || "An error occurred",
-        ...err.custom_error_fields
+        description: err.message || 'An error occurred',
+        ...err.custom_error_fields,
     });
 }

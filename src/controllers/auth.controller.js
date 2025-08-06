@@ -21,7 +21,7 @@ export default class AuthController {
 
     /**
      * Handles user registration
-     * @param {import('express').Request} req 
+     * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next - The next middleware function in the stack
      * @returns {Promise<void>} A promise that resolves when the registration is complete
@@ -31,14 +31,14 @@ export default class AuthController {
             const { username, password } = matchedData(req);
             const token = await this.#authService.register(username, password);
             res.json({ username, token });
-        } catch(err) {
+        } catch (err) {
             next(err, next);
         }
-    }
+    };
 
     /**
      * Handles user login
-     * @param {import('express').Request} req 
+     * @param {import('express').Request} req
      * @param {import('express').Response} res
      * @param {import('express').NextFunction} next - The next middleware function in the stack
      * @return {Promise<void>} A promise that resolves when the login is complete
@@ -48,10 +48,10 @@ export default class AuthController {
             const { username, password } = matchedData(req);
             const token = await this.#authService.login(username, password);
             res.json({ username, token });
-        } catch(err) {
+        } catch (err) {
             next(err, next);
         }
-    }
+    };
 
     /**
      * Handles fetching the authenticated user's information
@@ -63,5 +63,5 @@ export default class AuthController {
      */
     me = async (req, res) => {
         res.json(req.user);
-    }
+    };
 }

@@ -1,4 +1,3 @@
-
 /**
  * Base errors for http issues
  */
@@ -10,7 +9,7 @@ export default class HttpError extends Error {
      */
     constructor(status, message, custom_error_fields = {}) {
         super(message);
-        this.name = "HttpError";
+        this.name = 'HttpError';
         this.status = status;
         this.custom_error_fields = custom_error_fields;
     }

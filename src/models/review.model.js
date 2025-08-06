@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 
 /**
  * A factory that create the review model
@@ -8,13 +8,13 @@ import { DataTypes } from "sequelize";
 export default function createReviewModel(database) {
     return database.define('Review', {
         id: {
-            type: DataTypes.INTEGER, 
-            primaryKey: true, 
-            autoIncrement: true
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         content: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
     });
 }

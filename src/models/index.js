@@ -1,9 +1,9 @@
-import { Sequelize } from "sequelize";
-import createUserModel from "./user.model.js";
-import createRestaurantModel from "./restaurant.model.js";
-import createReviewModel from "./review.model.js";
-import createVoteModel from "./vote.model.js";
-import { DB_URI } from "../common/constants.js";
+import { Sequelize } from 'sequelize';
+import createUserModel from './user.model.js';
+import createRestaurantModel from './restaurant.model.js';
+import createReviewModel from './review.model.js';
+import createVoteModel from './vote.model.js';
+import { DB_URI } from '../common/constants.js';
 
 /**
  * Initializes the database and models
@@ -18,8 +18,8 @@ export default async function initModels() {
 
     try {
         await database.authenticate();
-    } catch(error) {
-        console.error("Error in database connection: ", error);
+    } catch (error) {
+        console.error('Error in database connection: ', error);
         throw error;
     }
 
@@ -49,7 +49,10 @@ export default async function initModels() {
 
     createOneToManyRelationship(UserModel, RestaurantModel, { name: 'ownerId', allowNull: false });
     createOneToManyRelationship(UserModel, ReviewModel, { name: 'authorId', allowNull: false });
-    createOneToManyRelationship(RestaurantModel, ReviewModel, { name: 'restaurantId', allowNull: false });
+    createOneToManyRelationship(RestaurantModel, ReviewModel, {
+        name: 'restaurantId',
+        allowNull: false,
+    });
     createOneToManyRelationship(ReviewModel, VoteModel, { name: 'reviewId', allowNull: false });
     createOneToManyRelationship(UserModel, VoteModel, { name: 'userId', allowNull: false });
 
@@ -59,7 +62,7 @@ export default async function initModels() {
         UserModel,
         RestaurantModel,
         ReviewModel,
-        VoteModel
+        VoteModel,
     };
 }
 
@@ -72,12 +75,12 @@ export default async function initModels() {
  */
 function createOneToManyRelationship(owner, owned, foreignKey = undefined) {
     owner.hasMany(owned, {
-        foreignKey
+        foreignKey,
     });
     owned.belongsTo(owner, {
         foreignKey,
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
     });
 }
 

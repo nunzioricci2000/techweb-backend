@@ -1,5 +1,5 @@
 import { HASH_SALT_ROUNDS, JWT_SECRET } from '../common/constants.js';
-import AuthService from './auth.service.js'
+import AuthService from './auth.service.js';
 
 /**
  * Initializes the repositories for the application.

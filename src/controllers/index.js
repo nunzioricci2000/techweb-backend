@@ -8,7 +8,7 @@ import AuthController from './auth.controller.js';
 export default async function initControllers(serviceCollection) {
     const { authService } = serviceCollection;
     return {
-        authController: new AuthController(authService)
+        authController: new AuthController(authService),
     };
 }
 

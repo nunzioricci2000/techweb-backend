@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 
 /**
  * A factory that create the vote model
@@ -8,13 +8,13 @@ import { DataTypes } from "sequelize";
 export default function createVoteModel(database) {
     return database.define('Vote', {
         id: {
-            type: DataTypes.INTEGER, 
-            primaryKey: true, 
-            autoIncrement: true
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         type: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
     });
 }

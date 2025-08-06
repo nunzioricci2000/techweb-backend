@@ -1,7 +1,7 @@
-import express, { Router } from "express"
-import checkAuth from "../middleware/auth.middleware.js";
+import express, { Router } from 'express';
+import checkAuth from '../middleware/auth.middleware.js';
 import validator from 'express-validator';
-import validate from "../middleware/validate.middleware.js";
+import validate from '../middleware/validate.middleware.js';
 
 /**
  * Creates an instance of AuthRouter.
@@ -51,15 +51,16 @@ export default function AuthRouter(authController, checkAuth) {
      *                   type: string
      *                   description: The JWT token for the user.
      */
-    router.route("/register")
-      .post(
-        [
-          validator.body("username").notEmpty().escape(), 
-          validator.body("password").notEmpty().escape(),
-          validate
-        ],
-        authController.register
-      );
+    router
+        .route('/register')
+        .post(
+            [
+                validator.body('username').notEmpty().escape(),
+                validator.body('password').notEmpty().escape(),
+                validate,
+            ],
+            authController.register
+        );
 
     /**
      * @openapi
@@ -98,44 +99,39 @@ export default function AuthRouter(authController, checkAuth) {
      *                   type: string
      *                   description: The JWT token for the user.
      */
-    router.route("/login")
-      .post(
-        [
-          validator.body("username").notEmpty().escape(),
-          validator.body("password").notEmpty().escape(),
-          validate
-        ],
-        authController.login
-      );
+    router
+        .route('/login')
+        .post(
+            [
+                validator.body('username').notEmpty().escape(),
+                validator.body('password').notEmpty().escape(),
+                validate,
+            ],
+            authController.login
+        );
 
     /**
-      * @openapi
-      * /auth/me:
-      *   get:
-      *     summary: Get the current user
-      *     security:
-      *       - bearerAuth: []
-      *     produces:
-      *       - application/json
-      *     responses:
-      *       200:
-      *         description: Returns the current user
-      *         content:
-      *           application/json:
-      *             schema:
-      *               type: object
-      *               properties:
-      *                 username:
-      *                   type: string
-      *                   description: The user's username.
-      */
-    router.route("/me")
-      .get(
-        [
-          checkAuth
-        ],
-        authController.me
-      );
+     * @openapi
+     * /auth/me:
+     *   get:
+     *     summary: Get the current user
+     *     security:
+     *       - bearerAuth: []
+     *     produces:
+     *       - application/json
+     *     responses:
+     *       200:
+     *         description: Returns the current user
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 username:
+     *                   type: string
+     *                   description: The user's username.
+     */
+    router.route('/me').get([checkAuth], authController.me);
 
     return router;
 }

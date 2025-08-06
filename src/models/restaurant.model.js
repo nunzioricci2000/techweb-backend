@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 
 /**
  * A factory that create the restaurant model
@@ -8,30 +8,30 @@ import { DataTypes } from "sequelize";
 export default function createRestaurantModel(database) {
     return database.define('Restaurant', {
         id: {
-            type: DataTypes.INTEGER, 
-            primaryKey: true, 
-            autoIncrement: true
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
+            unique: true,
         },
         description: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         latitude: {
             type: DataTypes.FLOAT,
-            allowNull: false
+            allowNull: false,
         },
         longitude: {
             type: DataTypes.FLOAT,
-            allowNull: false
+            allowNull: false,
         },
         image: {
             type: DataTypes.STRING,
-            allowNull: false
-        }
+            allowNull: false,
+        },
     });
 }

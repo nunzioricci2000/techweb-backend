@@ -1,12 +1,12 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import {
     ExpiredSessionError,
     InvalidSessionError,
     UserAlreadyRegisteredError,
     UserNotRegisteredError,
-    WrongPasswordError
-} from "../errors/auth.error.js";
+    WrongPasswordError,
+} from '../errors/auth.error.js';
 
 export default class AuthService {
     /**
@@ -33,12 +33,12 @@ export default class AuthService {
      * @param {string} secret - The secret key used for signing JWT tokens
      * @param {number} saltRounds - The number of rounds to use for hashing passwords
      */
-    constructor(userRepository, secret = "SECRET", saltRounds = 10) {
+    constructor(userRepository, secret = 'SECRET', saltRounds = 10) {
         this.#userRepository = userRepository;
         this.#secret = secret;
         this.#salt = bcrypt.genSaltSync(saltRounds);
     }
-    
+
     /**
      * Registers a new user in the database
      * @param {string} username - The username of the user to register
@@ -47,8 +47,7 @@ export default class AuthService {
      * @throws {UserAlreadyRegisteredError} if the user is already registered
      */
     async register(username, password) {
-        if (await this.#isUserRegistered(username))
-            throw new UserAlreadyRegisteredError(username);
+        if (await this.#isUserRegistered(username)) throw new UserAlreadyRegisteredError(username);
         const hashedPassword = bcrypt.hashSync(password, this.#salt);
         await this.#userRepository.createUser(username, hashedPassword);
         return this.#generateJwt(username);
@@ -66,14 +65,13 @@ export default class AuthService {
         const user = await this.#getUser(username);
         if (!user) throw new UserNotRegisteredError(username);
         const savedHash = user.password;
-        if (bcrypt.compareSync(password, savedHash))
-            return this.#generateJwt(username);
+        if (bcrypt.compareSync(password, savedHash)) return this.#generateJwt(username);
         throw new WrongPasswordError(username);
     }
 
     /**
      * Verifies a JWT token
-     * @param {string} token 
+     * @param {string} token
      * @returns {Promise<{username: string}>}
      * @throws {InvalidSessionError} if the token is invalid
      * @throws {ExpiredSessionError} if the token has expired
@@ -82,15 +80,15 @@ export default class AuthService {
         try {
             const verified = jwt.verify(token, this.#secret);
             return { username: verified.username };
-        } catch(err) {
-            switch(err.name) {
-            case "TokenExpiredError":
-                throw new ExpiredSessionError();
-            case "JsonWebTokenError":
-            case "NotBeforeError":
-                throw new InvalidSessionError();
-            default:
-                throw err;
+        } catch (err) {
+            switch (err.name) {
+                case 'TokenExpiredError':
+                    throw new ExpiredSessionError();
+                case 'JsonWebTokenError':
+                case 'NotBeforeError':
+                    throw new InvalidSessionError();
+                default:
+                    throw err;
             }
         }
     }
@@ -111,7 +109,7 @@ export default class AuthService {
      * @returns {Promise<import('../repositories/user.repository.js').default>} the user object found
      */
     async #getUser(username) {
-        return await this.#userRepository.readUser({ byUsername: username});
+        return await this.#userRepository.readUser({ byUsername: username });
     }
 
     /**
