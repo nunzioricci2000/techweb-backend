@@ -1,3 +1,4 @@
+import { matchedData } from 'express-validator';
 import HttpError from '../errors/http.error.js';
 
 /**
@@ -27,15 +28,11 @@ export default class AuthController {
      */
     register = async (req, res, next) => {
         try {
-            const { username, password } = req.body;
-            if (!username || !password) {
-                throw new HttpError(422, "Missing needed parameters!",
-                    { requiredFields: ["username", "password"] });
-            }
+            const { username, password } = matchedData(req);
             const token = await this.#authService.register(username, password);
             res.json({ username, token });
         } catch(err) {
-            this.#handleError(err, next);
+            next(err, next);
         }
     }
 
@@ -48,15 +45,11 @@ export default class AuthController {
      */
     login = async (req, res, next) => {
         try {
-            const { username, password } = req.body;
-            if (!username || !password) {
-                throw new HttpError(422, "Missing needed parameters!", 
-                    { requiredFields: ["username", "password"] });
-            }
+            const { username, password } = matchedData(req);
             const token = await this.#authService.login(username, password);
             res.json({ username, token });
         } catch(err) {
-            this.#handleError(err, next);
+            next(err, next);
         }
     }
 
@@ -70,24 +63,5 @@ export default class AuthController {
      */
     me = async (req, res) => {
         res.json(req.user);
-    }
-
-    /**
-     * Handles errors
-     * @param {Error} err
-     * @param {import('express').NextFunction} next
-     * @returns {void}
-     */
-    #handleError(err, next) {
-        console.error("AuthController error:", err);
-        const errorMap = {
-            "HttpError": err,
-            "UserAlreadyRegisteredError": { status: 409, message: "User already registered" },
-            "UserNotRegisteredError": { status: 409, message: "User not registered" },
-            "WrongPasswordError": { status: 401, message: "Wrong password" },
-            "default": { status: 500, message: "Internal server error!" }
-        };
-        const errorInfo = errorMap[err.name] || errorMap["default"];
-        next(errorInfo);
     }
 }

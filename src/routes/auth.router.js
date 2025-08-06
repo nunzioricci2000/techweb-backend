@@ -1,5 +1,7 @@
 import express, { Router } from "express"
 import checkAuth from "../middleware/auth.middleware.js";
+import validator from 'express-validator';
+import validate from "../middleware/validate.middleware.js";
 
 /**
  * Creates an instance of AuthRouter.
@@ -48,14 +50,16 @@ export default function AuthRouter(authController, checkAuth) {
      *                 token:
      *                   type: string
      *                   description: The JWT token for the user.
-     *       400:
-     *         description: Bad request
-     *       409:
-     *         description: User already registered
-     *       500:
-     *         description: Internal server error
      */
-    router.post("/register", authController.register);
+    router.route("/register")
+      .post(
+        [
+          validator.body("username").notEmpty().escape(), 
+          validator.body("password").notEmpty().escape(),
+          validate
+        ],
+        authController.register
+      );
 
     /**
      * @openapi
@@ -93,16 +97,16 @@ export default function AuthRouter(authController, checkAuth) {
      *                 token:
      *                   type: string
      *                   description: The JWT token for the user.
-     *       422:
-     *         description: Missing parameters
-     *       409:
-     *         description: User not registered
-     *       401:
-     *         description: Wrong password
-     *       500:
-     *         description: Internal server error
      */
-    router.post("/login", authController.login);
+    router.route("/login")
+      .post(
+        [
+          validator.body("username").notEmpty().escape(),
+          validator.body("password").notEmpty().escape(),
+          validate
+        ],
+        authController.login
+      );
 
     /**
       * @openapi
@@ -124,12 +128,14 @@ export default function AuthRouter(authController, checkAuth) {
       *                 username:
       *                   type: string
       *                   description: The user's username.
-      *       401:
-      *         description: Unauthorized
-      *       500:
-      *         description: Internal server error
       */
-    router.get("/me", checkAuth, authController.me);
+    router.route("/me")
+      .get(
+        [
+          checkAuth
+        ],
+        authController.me
+      );
 
     return router;
 }
