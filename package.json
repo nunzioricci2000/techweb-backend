@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "start": "node src/index.js",
-        "start:dev": "node src/index.js --watch",
+        "start:dev": "node --watch src/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier --write .",
         "lint": "eslint . --ext .js",
