@@ -10,7 +10,7 @@ import initControllers from './controllers/index.js';
 import initMiddlewares from './middleware/index.js';
 import { PORT } from './common/constants.js';
 
-const app = express();
+export const app = express();
 
 const swaggerSpecification = swaggerJsdoc({
     swaggerDefinition: {

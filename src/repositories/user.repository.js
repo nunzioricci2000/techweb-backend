@@ -24,9 +24,9 @@ export default class UserRepository {
     async createUser(username, password) {
         const newUser = await this.#UserModel.create({ username, password });
         return {
-            id: newUser.id,
-            username: newUser.username,
-            password: newUser.password,
+            id: newUser.getDataValue('id'),
+            username: newUser.getDataValue('username'),
+            password: newUser.getDataValue('password'),
         };
     }
 
@@ -36,13 +36,13 @@ export default class UserRepository {
      * @returns {Promise<User?>} The user object found
      */
     async readUser(filter) {
-        const condition = filter.byId ? { id: filter.byId } : { username: filter.byUsername };
+        const condition = 'byId' in filter ? { id: filter.byId } : { username: filter.byUsername };
         const foundUser = await this.#UserModel.findOne({ where: condition });
         if (!foundUser) return null;
         return {
-            id: foundUser.id,
-            username: foundUser.username,
-            password: foundUser.password,
+            id: foundUser.getDataValue('id'),
+            username: foundUser.getDataValue('username'),
+            password: foundUser.getDataValue('password'),
         };
     }
 }

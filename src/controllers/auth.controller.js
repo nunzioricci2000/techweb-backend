@@ -31,7 +31,7 @@ export default class AuthController {
             const token = await this.#authService.register(username, password);
             res.json({ username, token });
         } catch (err) {
-            next(err, next);
+            next(err);
         }
     };
 
@@ -48,7 +48,7 @@ export default class AuthController {
             const token = await this.#authService.login(username, password);
             res.json({ username, token });
         } catch (err) {
-            next(err, next);
+            next(err);
         }
     };
 

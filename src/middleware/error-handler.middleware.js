@@ -8,9 +8,14 @@
  * @returns {void}
  */
 export default function errorHandler(err, req, res, _next) {
-    res.status(err.status || 500).json({
-        code: err.status || 500,
-        description: err.message || 'An error occurred',
-        ...err.custom_error_fields,
+    res.status('status' in err && typeof err.status === 'number' ? err.status : 500).json({
+        code: 'status' in err && typeof err.status === 'number' ? err.status : 500,
+        description:
+            'message' in err && typeof err.message === 'string'
+                ? err.message
+                : 'Internal server error!',
+        ...('custom_error_fields' in err && typeof err.custom_error_fields == 'object'
+            ? err.custom_error_fields
+            : {}),
     });
 }

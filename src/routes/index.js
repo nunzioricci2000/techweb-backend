@@ -16,5 +16,5 @@ export default async function initRouters(controllerCollection, middlewareCollec
 
 /**
  * @typedef {object} RouterCollection
- * @property {import('./auth.router.js').default} authRouter - The AuthRouter instance
+ * @property {import('express').Router} authRouter - The AuthRouter instance
  */

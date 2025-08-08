@@ -7,6 +7,7 @@ import {
     UserNotRegisteredError,
     WrongPasswordError,
 } from '../errors/auth.error.js';
+import HttpError from '../errors/http.error.js';
 
 export default class AuthService {
     /**
@@ -79,6 +80,7 @@ export default class AuthService {
     async verifyToken(token) {
         try {
             const verified = jwt.verify(token, this.#secret);
+            if (typeof verified === 'string') throw new HttpError(400, 'Malformed Token!');
             return { username: verified.username };
         } catch (err) {
             switch (err.name) {
@@ -106,7 +108,7 @@ export default class AuthService {
     /**
      * Retrieves a user by username
      * @param {string?} username - the username of the user to retrieve
-     * @returns {Promise<import('../repositories/user.repository.js').default>} the user object found
+     * @returns {Promise<import('../repositories/user.repository.js').User>} the user object found
      */
     async #getUser(username) {
         return await this.#userRepository.readUser({ byUsername: username });
