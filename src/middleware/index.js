@@ -1,4 +1,4 @@
-import checkAuth from './auth.middleware.js';
+import AuthMiddlewares from './auth.middleware.js';
 
 /**
  * Initializes the controllers for the application.
@@ -9,11 +9,11 @@ import checkAuth from './auth.middleware.js';
 export default async function initMiddlewares(serviceCollection) {
     const { authService } = serviceCollection;
     return {
-        checkAuth: checkAuth(authService),
+        authMiddlewares: AuthMiddlewares(authService),
     };
 }
 
 /**
  * @typedef {object} MiddlewareCollection
- * @property {import('express').RequestHandler} checkAuth
+ * @property {import('./auth.middleware.js').AuthMiddlewareCollection} authMiddlewares - The AuthMiddlewares instance
  */
