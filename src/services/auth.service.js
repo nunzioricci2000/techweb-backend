@@ -73,7 +73,7 @@ export default class AuthService {
     /**
      * Verifies a JWT token
      * @param {string} token
-     * @returns {Promise<{username: string}>}
+     * @returns {Promise<{username: string, id: number}>}
      * @throws {InvalidSessionError} if the token is invalid
      * @throws {ExpiredSessionError} if the token has expired
      */
@@ -81,7 +81,11 @@ export default class AuthService {
         try {
             const verified = jwt.verify(token, this.#secret);
             if (typeof verified === 'string') throw new HttpError(400, 'Malformed Token!');
-            return { username: verified.username };
+            const user = await this.#userRepository.readUser({ byUsername: verified.username });
+            return {
+                username: user.username,
+                id: user.id,
+            };
         } catch (err) {
             switch (err.name) {
                 case 'TokenExpiredError':
