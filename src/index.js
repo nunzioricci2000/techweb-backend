@@ -8,9 +8,11 @@ import initServices from './services/index.js';
 import initRouters from './routes/index.js';
 import initControllers from './controllers/index.js';
 import initMiddlewares from './middleware/index.js';
-import { PORT } from './common/constants.js';
+import { PORT, STATIC_DIR } from './common/constants.js';
 
 export const app = express();
+
+app.use(express.static(STATIC_DIR));
 
 /**
  * @type {import('swagger-jsdoc').Options}
