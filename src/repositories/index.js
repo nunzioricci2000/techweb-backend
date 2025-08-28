@@ -1,3 +1,4 @@
+import RestaurantRepository from './restaurant.repository.js';
 import UserRepository from './user.repository.js';
 
 /**
@@ -6,13 +7,15 @@ import UserRepository from './user.repository.js';
  * @return {Promise<RepositoryCollection>} A promise that resolves to a collection of repositories.
  */
 export default async function initRepositories(modelCollection) {
-    const { UserModel } = modelCollection;
+    const { UserModel, RestaurantModel } = modelCollection;
     return {
         userRepository: new UserRepository(UserModel),
+        restaurantRepository: new RestaurantRepository(RestaurantModel),
     };
 }
 
 /**
  * @typedef {object} RepositoryCollection
  * @property {import('./user.repository.js').default} userRepository - The UserRepository instance.
+ * @property {import('./restaurant.repository.js').default} restaurantRepository - The RestaurantRepository instance.
  */
