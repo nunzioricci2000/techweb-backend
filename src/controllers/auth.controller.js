@@ -61,6 +61,6 @@ export default class AuthController {
      * @requires The authenticated user's information. This is populated by the authentication middleware.
      */
     me = async (req, res) => {
-        res.json(req.user);
+        res.json({ username: req.user.username });
     };
 }
