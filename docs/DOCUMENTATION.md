@@ -17,7 +17,7 @@ The following diagram illustrates the relationships between these layers:
 graph TD
     Routes --&laquo;uses&raquo;--> Middleware
     Routes --&laquo;uses&raquo;--> Controllers
-    Middleware --&laquo;uses&raquo;--> Services
+    Middleware --&laquo;uses sometimes&raquo;--> Services
     Controllers --&laquo;uses&raquo;--> Services
     Services --&laquo;uses&raquo;--> Repositories
     Repositories --&laquo;uses&raquo;--> Models
