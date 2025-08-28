@@ -31,6 +31,12 @@ The project includes also several fearures that are orthogonal to the main layer
 2. **Restaurant**: This feature manages restaurant-related functionality, including restaurant creation and modification.
 3. **Review**: This feature allows users to create and manage reviews for restaurants.
 
+### Why is the project structure layer-first?
+
+The project structure follows a layer-first approach. This means that the src folder is organized by the application layers rather than by features. In practice, the main subfolders are named after the layers they represent (e.g., controllers, services, repositories), instead of grouping code by feature.
+
+The reason behind this choice is the relatively small size of the project: using a feature-first structure would add unnecessary verbosity and fragmentation. With a layer-first structure, the codebase remains simpler, easier to navigate, and more maintainable at this scale.
+
 ## Data Handling
 
 Like most web apps, this project has to deal with different representations of the same data. On the one hand, we want to keep certain information hidden from the user for security reasons (e.g., the user ID). On the other hand, data persistence details are often inconvenient to work with directly. For this reason, each piece of data has three representations:
