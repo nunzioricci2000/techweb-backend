@@ -12,6 +12,9 @@ import { PORT } from './common/constants.js';
 
 export const app = express();
 
+/**
+ * @type {import('swagger-jsdoc').Options}
+ */
 const swaggerSpecification = swaggerJsdoc({
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -19,11 +22,24 @@ const swaggerSpecification = swaggerJsdoc({
             title: 'Fake Restaurant API',
             version: '1.0.0',
         },
+        tags: [
+            {
+                name: 'auth',
+                description: 'Authentication related endpoints',
+            },
+            {
+                name: 'restaurants',
+                description: 'Restaurant related endpoints',
+            },
+        ],
     },
     apis: ['./src/routes/*.js'],
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
+app.get('/api', (req, res) => {
+    res.json(swaggerSpecification);
+});
 
 const models = await initModels();
 const repositories = await initRepositories(models);
