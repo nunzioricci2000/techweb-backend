@@ -35,12 +35,12 @@ The project includes also several fearures that are orthogonal to the main layer
 
 Like most web apps, this project has to deal with different representations of the same data. On the one hand, we want to keep certain information hidden from the user for security reasons (e.g., the user ID). On the other hand, data persistence details are often inconvenient to work with directly. For this reason, each piece of data has three representations:
 
-* an external one, called **DTO** (Data Transfer Object), safe to share with the user;
-* an internal one, called **Entity**, convenient to manage;
-* and a persistent one, called **Schema**, containing the information needed to store data in the database.
+- an external one, called **DTO** (Data Transfer Object), safe to share with the user;
+- an internal one, called **Entity**, convenient to manage;
+- and a persistent one, called **Schema**, containing the information needed to store data in the database.
 
 The responsibility for converting data between its persistent and internal versions is entrusted to the repository layer.  
 Conversions between the internal and external representations must be handled in both directions:
 
-* on **input**, the data sent by the user in a request must be validated and translated into its internal representation; this responsibility lies with the middleware;
-* on **output**, the data returned to the user in the response must be properly structured and concise; this responsibility lies with the controller.
+- on **input**, the data sent by the user in a request must be validated and translated into its internal representation; this responsibility lies with the middleware;
+- on **output**, the data returned to the user in the response must be properly structured and concise; this responsibility lies with the controller.
