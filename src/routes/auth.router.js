@@ -5,11 +5,11 @@ import validate from '../middleware/validate.middleware.js';
 /**
  * Creates an instance of AuthRouter.
  * @param {import("../controllers/auth.controller.js").default} authController - The authentication
- * @param {import("../middleware/auth.middleware.js").AuthMiddlewareCollection} authMiddlewares - Middleware to check authentication
+ * @param {import('express').RequestHandler} checkAuth - Middleware to check authentication
+ * service to handle user registration and login
  * @returns {Router} An Express router for authentication routes
  */
-export default function AuthRouter(authController, authMiddlewares) {
-    const { checkAuth } = authMiddlewares;
+export default function AuthRouter(authController, checkAuth) {
     const router = Router();
     router.use(express.json());
 

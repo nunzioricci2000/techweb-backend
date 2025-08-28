@@ -8,9 +8,9 @@ import AuthRouter from './auth.router.js';
  */
 export default async function initRouters(controllerCollection, middlewareCollection) {
     const { authController } = controllerCollection;
-    const { authMiddlewares } = middlewareCollection;
+    const { checkAuth } = middlewareCollection;
     return {
-        authRouter: AuthRouter(authController, authMiddlewares),
+        authRouter: AuthRouter(authController, checkAuth),
     };
 }
 
