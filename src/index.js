@@ -51,6 +51,7 @@ const middlewares = await initMiddlewares(services);
 const routers = await initRouters(controllers, middlewares);
 
 app.use('/auth', routers.authRouter);
+app.use('/restaurants', routers.restaurantRouter);
 
 app.use(errorHandler);
 
