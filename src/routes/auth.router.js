@@ -17,6 +17,8 @@ export default function AuthRouter(authController, checkAuth) {
      * @openapi
      * /auth/register:
      *   post:
+     *     tags:
+     *       - auth
      *     summary: Register a new user
      *     consumes:
      *       - application/json
@@ -65,6 +67,8 @@ export default function AuthRouter(authController, checkAuth) {
      * @openapi
      * /auth/login:
      *   post:
+     *     tags:
+     *       - auth
      *     summary: Returns a session token for the user
      *     consumes:
      *       - application/json
@@ -113,6 +117,8 @@ export default function AuthRouter(authController, checkAuth) {
      * @openapi
      * /auth/me:
      *   get:
+     *     tags:
+     *       - auth
      *     summary: Get the current user
      *     security:
      *       - bearerAuth: []
