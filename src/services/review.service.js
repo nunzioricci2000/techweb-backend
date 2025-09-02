@@ -46,11 +46,8 @@ export default class ReviewService {
      * @returns {Promise<import('../repositories/review.repository.js').Review|null>} The updated review object or null if not found
      */
     async updateReview(id, reviewData, authorId) {
-        // Get the review
-        const reviews = await this.#reviewRepository.readReviewsByRestaurant(
-            reviewData.restaurantId
-        );
-        const review = reviews.find((r) => r.id === id);
+        // Get the review directly by id
+        const review = await this.#reviewRepository.readReview(id);
         if (!review) throw new Error(`Review with ID ${id} not found`);
         if (review.authorId !== authorId) {
             throw new Error(`User with ID ${authorId} is not the author of review with ID ${id}`);
@@ -69,10 +66,9 @@ export default class ReviewService {
      * @param {number} authorId - The ID of the user attempting the deletion
      * @returns {Promise<boolean>} True if the review was deleted, false otherwise
      */
-    async deleteReview(id, authorId, restaurantId) {
-        // Get the review
-        const reviews = await this.#reviewRepository.readReviewsByRestaurant(restaurantId);
-        const review = reviews.find((r) => r.id === id);
+    async deleteReview(id, authorId) {
+        // Get the review directly by id
+        const review = await this.#reviewRepository.readReview(id);
         if (!review) throw new Error(`Review with ID ${id} not found`);
         if (review.authorId !== authorId) {
             throw new Error(`User with ID ${authorId} is not the author of review with ID ${id}`);

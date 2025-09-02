@@ -33,6 +33,22 @@ export default class ReviewRepository {
     }
 
     /**
+     * Reads a single review by ID.
+     * @param {number} id - The ID of the review
+     * @returns {Promise<Review|null>} The review object found or null if not found
+     */
+    async readReview(id) {
+        const foundReview = await this.#ReviewModel.findByPk(id);
+        if (!foundReview) return null;
+        return {
+            id: foundReview.getDataValue('id'),
+            authorId: foundReview.getDataValue('authorId'),
+            restaurantId: foundReview.getDataValue('restaurantId'),
+            content: foundReview.getDataValue('content'),
+        };
+    }
+
+    /**
      * Reads reviews by restaurant ID.
      * @param {number} restaurantId - The ID of the restaurant
      * @returns {Promise<Review[]>} The list of reviews for the restaurant
