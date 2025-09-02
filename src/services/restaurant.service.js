@@ -3,13 +3,19 @@ export default class RestaurantService {
      * @type {import('../repositories/restaurant.repository.js').default}
      */
     #restaurantRepository;
+    /**
+     * @type {import('../repositories/review.repository.js').default}
+     */
+    #reviewRepository;
 
     /**
      * Creates an instance of RestaurantService.
      * @param {import('../repositories/restaurant.repository.js').default} restaurantRepository
+     * @param {import('../repositories/review.repository.js').default} reviewRepository
      */
-    constructor(restaurantRepository) {
+    constructor(restaurantRepository, reviewRepository) {
         this.#restaurantRepository = restaurantRepository;
+        this.#reviewRepository = reviewRepository;
     }
 
     /**
@@ -84,6 +90,11 @@ export default class RestaurantService {
         if (!restaurant) throw new Error(`Restaurant with ID ${id} not found`);
         if (restaurant.ownerId !== ownerId) {
             throw new Error(`User ${ownerId} is not the owner of restaurant with ID ${id}`);
+        }
+        // Cancella tutte le review associate al ristorante
+        const reviews = await this.#reviewRepository.readReviewsByRestaurant(id);
+        for (const review of reviews) {
+            await this.#reviewRepository.deleteReview(review.id);
         }
         await this.#restaurantRepository.deleteRestaurant(id);
     }
