@@ -37,6 +37,12 @@ The project structure follows a layer-first approach. This means that the src fo
 
 The reason behind this choice is the relatively small size of the project: using a feature-first structure would add unnecessary verbosity and fragmentation. With a layer-first structure, the codebase remains simpler, easier to navigate, and more maintainable at this scale.
 
+### Poor man's Dependency Injection and Inversion of Control
+
+The project employs a simple form of Dependency Injection (DI) and Inversion of Control (IoC) to manage dependencies between different components. Each layer is designed to depend on abstractions rather than concrete implementations, allowing for greater flexibility and testability.
+
+As shown, the `index.js` files in each layer are responsible for creating instances of the components and injecting their dependencies. This approach ensures that each component receives the necessary dependencies without being tightly coupled to specific implementations.
+
 ## Data Handling
 
 Like most web apps, this project has to deal with different representations of the same data. On the one hand, we want to keep certain information hidden from the user for security reasons (e.g., the user ID). On the other hand, data persistence details are often inconvenient to work with directly. For this reason, each piece of data has three representations:
