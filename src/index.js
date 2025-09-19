@@ -33,6 +33,10 @@ const swaggerSpecification = swaggerJsdoc({
                 name: 'restaurants',
                 description: 'Restaurant related endpoints',
             },
+            {
+                name: 'reviews',
+                description: 'Review related endpoints',
+            },
         ],
     },
     apis: ['./src/routes/*.js'],
